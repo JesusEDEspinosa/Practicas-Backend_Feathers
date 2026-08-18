@@ -10,7 +10,7 @@ import type { PurchasesService } from './purchases.class'
 
 const productItemSchema = Type.Object({
   _id: ObjectIdSchema(),
-  quantity: Type.Number()
+  quantity: Type.Number({ minimum: 1 })
 })
 
 
@@ -19,7 +19,7 @@ export const purchasesSchema = Type.Object(
   {
     _id: ObjectIdSchema(),
     UserID: ObjectIdSchema(),
-    Products: Type.Array(productItemSchema),
+    Products: Type.Array(productItemSchema, { minItems: 1 }),
     Date: Type.String(),
   },
   { $id: 'Purchases', additionalProperties: false }
@@ -60,7 +60,22 @@ export const purchasesPatchSchema = Type.Partial(purchasesSchema, {
 })
 export type PurchasesPatch = Static<typeof purchasesPatchSchema>
 export const purchasesPatchValidator = getValidator(purchasesPatchSchema, dataValidator)
-export const purchasesPatchResolver = resolve<PurchasesPatch, HookContext<PurchasesService>>({})
+export const purchasesPatchResolver = resolve<PurchasesPatch, HookContext<PurchasesService>>({
+  Date: async () => {
+    const date = new Date();
+
+    return date.toLocaleString('es-MX', {
+      timeZone: 'America/Mexico_City',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+  }
+})
 
 // Schema for allowed query properties
 export const purchasesQueryProperties = Type.Pick(

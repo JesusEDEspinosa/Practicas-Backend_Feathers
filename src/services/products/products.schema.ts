@@ -12,12 +12,12 @@ import type { ProductsService } from './products.class'
 export const productsSchema = Type.Object(
   {
     _id: ObjectIdSchema(),
-    name: Type.String(),
-    description: Type.String(),
-    price: Type.Number(),
-    imgUrl: Type.String(),
-    categories: Type.Array(Type.String()),
-    options: Type.Array(Type.String()),
+    name: Type.String({ minLength: 3 }),
+    description: Type.String({ minLength: 10 }),
+    price: Type.Number({ minimum: 0 }),
+    imgUrl: Type.String({ pattern: '^(http|https)://' }),
+    categories: Type.Array(Type.String({ minLength: 3 })),
+    options: Type.Array(Type.String({ minLength: 3 })),
   },
   { $id: 'Products', additionalProperties: false }
 )

@@ -12,12 +12,12 @@ import type { UsersService } from './users.class'
 export const usersSchema = Type.Object(
   {
     _id: ObjectIdSchema(),
-    password: Type.String(),
-    first_name: Type.String(),
-    last_name: Type.String(),
-    username: Type.String(),
+    password: Type.String({ minLength: 6 }),
+    first_name: Type.String({ minLength: 3 }),
+    last_name: Type.String({ minLength: 3 }),
+    username: Type.String({ minLength: 3 }),
     email: Type.String({ format: 'email' }),
-    gender: Type.String(),
+    gender: Type.String({ enum: ['Masculino', 'Femenino'] }),
   },
   { $id: 'Users', additionalProperties: false }
 )
