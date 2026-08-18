@@ -4,6 +4,22 @@ import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
 
+import { purchasesClient } from './services/purchases/purchases.shared'
+export type {
+  Purchases,
+  PurchasesData,
+  PurchasesQuery,
+  PurchasesPatch
+} from './services/purchases/purchases.shared'
+
+import { productsClient } from './services/products/products.shared'
+export type {
+  Products,
+  ProductsData,
+  ProductsQuery,
+  ProductsPatch
+} from './services/products/products.shared'
+
 import { usersClient } from './services/users/users.shared'
 export type { Users, UsersData, UsersQuery, UsersPatch } from './services/users/users.shared'
 
@@ -34,5 +50,7 @@ export const createClient = <Configuration = any,>(
   client.set('connection', connection)
 
   client.configure(usersClient)
+  client.configure(productsClient)
+  client.configure(purchasesClient)
   return client
 }
